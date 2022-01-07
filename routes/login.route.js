@@ -8,6 +8,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
+    console.log(req.body);
     const { error } = validate.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -19,7 +20,9 @@ router.post('/', async (req, res) => {
 
     const token = jwt.sign({_id: user._id}, process.env.jwtPrivateKey);
 
-    res.send(token);
+    res.send({
+        token
+    });
 });
 
 const validate = Joi.object({

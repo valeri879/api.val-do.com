@@ -32,7 +32,9 @@ const User = mongoose.model('users', new mongoose.Schema({
         required: true,
         minlength: 8,
         maxlength: 1024,
-    }
+    },
+    isAdmin: { type: Boolean, default: false },
+    isVerify: { type: Boolean, default: false },
 }));
 
 const schema = Joi.object({

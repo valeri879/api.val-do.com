@@ -1,7 +1,6 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const _ = require('lodash');
 const { User, validate } = require('../models/user.model');
 const express = require('express');
 const router = express.Router();
@@ -11,7 +10,7 @@ router.post('/', async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send('ასეთი მომხმარებელი უკვე რეგისტრირებულია');
+    if (user) return res.status(400).send('ასეთი მომხმარებელი უკვე რეგისტრირებულია სხვა მომხმარებელი');
 
     user = new User({
         firstName: req.body.firstName,
@@ -26,16 +25,9 @@ router.post('/', async (req, res) => {
 
     await user.save();
 
-    const token = jwt.sign({_id: user._id}, process.env.jwtPrivateKey);
+    const token = jwt.sign({ _id: user._id }, process.env.jwtPrivateKey);
 
-    res.header('x-auth-token', token).send(
-        _.pick(user, [
-            '_id',
-            'firstName',
-            'lastName',
-            'email',
-        ])
-    );
+    res.header('x-auth-token', token).send({ token });
 });
 
 module.exports = router;
