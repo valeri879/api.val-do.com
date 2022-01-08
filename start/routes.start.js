@@ -1,6 +1,7 @@
 const express = require('express');
-const registration = require('../routes/registration.route');
-const login = require('../routes/login.route');
+const registration = require('../routes/auth/registration.route');
+const login = require('../routes/auth/login.route');
+const reset = require('../routes/auth/reset.route');
 
 module.exports = function(app) {
     app.use(express.json());
@@ -13,4 +14,5 @@ module.exports = function(app) {
     });
     app.use('/api/registration', registration);
     app.use('/api/login', login);
+    app.use('/api/reset', reset);
 }

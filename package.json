@@ -1,11 +1,14 @@
 {
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "config": "^3.3.6",
     "express": "^4.17.1",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.1.4"
+    "mongoose": "^6.1.4",
+    "nodemailer": "^6.7.2"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
   }
 }

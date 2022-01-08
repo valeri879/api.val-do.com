@@ -35,6 +35,8 @@ const User = mongoose.model('users', new mongoose.Schema({
     },
     isAdmin: { type: Boolean, default: false },
     isVerify: { type: Boolean, default: false },
+    registrationDate: { type: String, default: Date.now },
+    verificationCode: { type: String }
 }));
 
 const schema = Joi.object({
