@@ -3,3 +3,6 @@ node_modules/
 
 #environment file
 .env
+
+#upload folder
+uploads
