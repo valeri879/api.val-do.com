@@ -20,6 +20,14 @@ const Course = mongoose.model('courses', new mongoose.Schema({
         minlength: 2,
         maxlength: 1024,
     },
+    telegramLink: {
+        type: String,
+        default: 'https://t.me/+5Ky8IOnduHs5MjQ6'
+    },
+    repoLink: {
+        type: String,
+        default: 'https://github.com/valeri879/learn_html'
+    },
     img: {
         type: String,
         required: true,

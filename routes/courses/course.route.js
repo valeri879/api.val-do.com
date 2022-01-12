@@ -15,22 +15,45 @@ router.post(`/`, auth, async (req, res) => {
     const token = req.header(`x-auth-token`);
     const userId = jwt.verify(token, process.env.PRIVATE_KEY)._id;
     const user = await User.findOne({ _id: userId });
-
     try {
         if (user.isAdmin) {
-            let NewCourse = new Course({
+            let newCourse = new Course({
                 title: req.body.title,
                 descr: req.body.descr,
                 youtubeLink: req.body.youtubeLink,
+                telegramLink: req.body.telegramLink ?? undefined,
+                repoLink: req.body.repoLink ?? undefined,
                 img: req.body.img,
                 category: req.body.category,
             });
-            NewCourse.save();
+            newCourse.save();
             res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
         }
         else {
             res.status(403).send(`ფუნქციონალზე წვდომა შეზღუდულია`);
         }
+    }
+    catch (ex) {
+        res.status(400).send(new Error(ex));
+    }
+});
+
+/* edit courses */
+router.put(`/:id`, auth, isAdmin, async (req, res) => {
+    console.log(req.body);
+    try {
+        /* delete img from directory if it exists */
+        if (fs.existsSync(req.body.oldPath)) await unlinkAsync(req.body.oldPath);
+        await Course.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            descr: req.body.descr,
+            youtubeLink: req.body.youtubeLink,
+            telegramLink: req.body.telegramLink ?? undefined,
+            repoLink: req.body.repoLink ?? undefined,
+            img: req.body.img,
+            category: req.body.category,
+        });
+        res.status(200).send({ message: `კურსი წარმატებით დარედაქტირდა` });
     }
     catch (ex) {
         res.status(400).send(new Error(ex));
@@ -70,6 +93,5 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
         res.status(400).send(new Error(ex));
     }
 });
-
 
 module.exports = router;
