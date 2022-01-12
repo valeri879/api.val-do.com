@@ -21,8 +21,8 @@ router.post(`/`, auth, async (req, res) => {
                 title: req.body.title,
                 descr: req.body.descr,
                 youtubeLink: req.body.youtubeLink,
-                telegramLink: req.body.telegramLink ?? undefined,
-                repoLink: req.body.repoLink ?? undefined,
+                telegramLink: req.body.telegramLink || undefined,
+                repoLink: req.body.repoLink || undefined,
                 img: req.body.img,
                 category: req.body.category,
             });
