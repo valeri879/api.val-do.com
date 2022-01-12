@@ -18,7 +18,7 @@ module.exports = async function sendMail(data) {
         from: '"😎 val-do.com" <valeri.kharitonashvili@live.com>', // sender address
         to: `${data['email']}`, // list of receivers
         subject: "🔐 პაროლის აღდგენა - val-do.com", // Subject line
-        text: `🔐 პაროლის აღსადგენად გთხოვთ გადახვიდეთ ბმულზე http://localhost:4200/set-password?email=${data['email']}&token=${data['token']}`, // plain text body
-        html: `🔐  პაროლის აღსადგენად გთხოვთ გადახვიდეთ ბმულზე <br> <a href="http://localhost:4200/set-password?email=${data['email']}&token=${data['token']}">http://localhost:4200/set-password?email=${data['email']}&token=${data['token']}</a>`, // html body
+        text: `🔐 პაროლის აღსადგენად გთხოვთ გადახვიდეთ ბმულზე ${process.env.HOST}/set-password?email=${data['email']}&token=${data['token']}`, // plain text body
+        html: `🔐  პაროლის აღსადგენად გთხოვთ გადახვიდეთ ბმულზე <br> <a href="${process.env.HOST}/set-password?email=${data['email']}&token=${data['token']}">${process.env.HOST}/set-password?email=${data['email']}&token=${data['token']}</a>`, // html body
     });
 }

@@ -40,7 +40,7 @@ router.post('/verification', async (req, res) => {
         res.status(200).send({data: `ელფოსტა ${req.body.email} წარმატებით გააქტიურდა`});
     }
     else {
-        res.status(400).send(`ვეფიფიკაციის კოდი არასწორია`);
+        res.status(400).send({message: `ვეფიფიკაციის კოდი არასწორია`});
     }
 });
 

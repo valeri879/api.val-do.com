@@ -6,7 +6,9 @@ const { Course } = require('../../models/course.model');
 const { User } = require('../../models/user.model');
 const upload = require('../../middleware/upload.middleware');
 const isAdmin = require('../../middleware/isAdmin.middlware');
-
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 /* add courses */
 router.post(`/`, auth, async (req, res) => {
@@ -24,7 +26,7 @@ router.post(`/`, auth, async (req, res) => {
                 category: req.body.category,
             });
             NewCourse.save();
-            res.status(200).send({message: `კურსი წარმატებით დაემატა`});
+            res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
         }
         else {
             res.status(403).send(`ფუნქციონალზე წვდომა შეზღუდულია`);
@@ -49,20 +51,25 @@ router.get(`/`, async (req, res) => {
 /* get specific course */
 router.get(`/:id`, async (req, res) => {
     const course = await Course.findById(req.params.id).select('-__v');
-    course ? res.status(200).send(course) : res.status(400).send({ data: '123' });
+    course ? res.status(200).send({ data: course }) : res.status(400).send({ data: 'კურსი ვერ მოიძებნა' });
 });
 
 /* delete course */
 router.delete(`/:id`, auth, isAdmin, async (req, res) => {
+    const course = await Course.findById(req.params.id);
+    const imgPath = course.img;
+
+    /* delete img from directory if it exists */
+    if (fs.existsSync(imgPath)) await unlinkAsync(imgPath);
+    /* delete course */
     await Course.findByIdAndDelete(req.params.id);
     try {
         res.status(200).send({ message: 'კურსი წარმატებით წაიშალა' });
     }
     catch (ex) {
-        // res.status(400).send(ex);
+        res.status(400).send(new Error(ex));
     }
 });
-
 
 
 module.exports = router;
