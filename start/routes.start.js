@@ -2,8 +2,9 @@ const express = require('express');
 const registration = require('../routes/auth/registration.route');
 const login = require('../routes/auth/login.route');
 const reset = require('../routes/auth/reset.route');
-const user = require('../routes/user/me.route');
+const me = require('../routes/user/me.route');
 const courses = require('../routes/courses/course.route');
+const users = require('../routes/user/users.route')
 
 module.exports = function(app) {
     app.use(express.json());
@@ -19,6 +20,7 @@ module.exports = function(app) {
     app.use('/api/registration', registration);
     app.use('/api/login', login);
     app.use('/api/reset', reset);
-    app.use('/api/user', user);
+    app.use('/api/user', me);
+    app.use('/api/users', users);
     app.use('/api/courses', courses);
 }
