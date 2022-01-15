@@ -67,7 +67,13 @@ router.post(`/upload`, auth, upload.single('img'), async (req, res) => {
 
 /* get courses */
 router.get(`/`, async (req, res) => {
-    const courses = await Course.find().select(['-__v']);
+    let courses;
+    if (!req.query) {
+        courses = await Course.find().select(['-__v']);
+    }
+    else {
+        courses = await Course.find().sort({date: req.query.date}).select(['-__v']);
+    }
     res.status(200).send(courses);
 });
 
