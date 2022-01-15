@@ -68,13 +68,27 @@ router.post(`/upload`, auth, upload.single('img'), async (req, res) => {
 /* get courses */
 router.get(`/`, async (req, res) => {
     let courses;
-    if (!req.query) {
+    /* sort by date */
+    if (!req.query.date) {
         courses = await Course.find().select(['-__v']);
     }
     else {
-        courses = await Course.find().sort({date: req.query.date}).select(['-__v']);
+        courses = await Course.find().sort({ date: req.query.date }).select(['-__v']);
     }
     res.status(200).send(courses);
+});
+
+/* get favorites */
+router.post(`/get-favorites`, auth, async (req, res) => {
+    try {
+        const courses = await Course.find({
+            _id: { $in: req.body.favorites },
+        }).select('-__v');
+        res.status(200).send(courses);
+    }
+    catch (ex) {
+        res.status(400).send(new Error(ex));
+    }
 });
 
 /* get specific course */

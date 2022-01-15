@@ -33,6 +33,9 @@ const User = mongoose.model('users', new mongoose.Schema({
         minlength: 8,
         maxlength: 1024,
     },
+    favorites: {
+        type: []
+    },
     isAdmin: { type: Boolean, default: false },
     isVerify: { type: Boolean, default: false },
     registrationDate: { type: String, default: Date.now },
