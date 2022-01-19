@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
@@ -19,6 +20,10 @@ const Course = mongoose.model('courses', new mongoose.Schema({
         required: true,
         minlength: 2,
         maxlength: 1024,
+    },
+    iframe: {
+        type: String,
+        maxlength: 5000,
     },
     telegramLink: {
         type: String,

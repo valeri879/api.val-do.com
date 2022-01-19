@@ -25,6 +25,7 @@ router.post(`/`, auth, async (req, res) => {
                 repoLink: req.body.repoLink || undefined,
                 img: req.body.img,
                 category: req.body.category,
+                iframe: req.body.iframe
             });
             newCourse.save();
             res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
@@ -52,6 +53,7 @@ router.put(`/:id`, auth, isAdmin, async (req, res) => {
             repoLink: req.body.repoLink || undefined,
             img: req.body.img,
             category: req.body.category,
+            iframe: req.body.iframe
         });
         res.status(200).send({ message: `კურსი წარმატებით დარედაქტირდა` });
     }
