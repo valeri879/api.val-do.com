@@ -48,9 +48,9 @@ router.put(`/`, auth, isAdmin, async (req, res) => {
 });
 
 /* delete tag */
-router.delete(`/`, auth, isAdmin, async (req, res) => {
+router.delete(`/:id`, auth, isAdmin, async (req, res) => {
     try {
-        await Tags.findByIdAndRemove(req.body.id);
+        await Tags.findByIdAndRemove(req.params.id);
         res.status(200).send({ message: `თეგი წარმატებით წაიშალა` });
     }
     catch (ex) {

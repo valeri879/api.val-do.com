@@ -14,7 +14,6 @@ const unlinkAsync = promisify(fs.unlink);
 router.post(`/`, auth, async (req, res) => {
     const token = req.header(`x-auth-token`);
     const userId = jwt.verify(token, process.env.PRIVATE_KEY)._id;
-    const user = await User.findOne({ _id: userId });
     try {
         if (user.isAdmin) {
             let newCourse = new Course({
@@ -25,7 +24,8 @@ router.post(`/`, auth, async (req, res) => {
                 repoLink: req.body.repoLink || undefined,
                 img: req.body.img,
                 category: req.body.category,
-                iframe: req.body.iframe
+                iframe: req.body.iframe,
+                tags: req.body.tags
             });
             newCourse.save();
             res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
@@ -53,7 +53,8 @@ router.put(`/:id`, auth, isAdmin, async (req, res) => {
             repoLink: req.body.repoLink || undefined,
             img: req.body.img,
             category: req.body.category,
-            iframe: req.body.iframe
+            iframe: req.body.iframe,
+            tags: req.body.tags,
         });
         res.status(200).send({ message: `კურსი წარმატებით დარედაქტირდა` });
     }
@@ -70,13 +71,13 @@ router.post(`/upload`, auth, upload.single('img'), async (req, res) => {
 /* get courses */
 router.get(`/`, async (req, res) => {
     let courses;
-    /* sort by date */
-    if (!req.query.date) {
-        courses = await Course.find().select(['-__v']);
+    /* sort by tags */
+    if (req.query.tag) {
+        courses = await Course.find({ tags: { $elemMatch: { _id: req.query.tag } } }).sort({ date: req.query.date || '1' });
+        res.status(200).send(courses);
+        return;
     }
-    else {
-        courses = await Course.find().sort({ date: req.query.date }).select(['-__v']);
-    }
+    courses = await Course.find().sort({ date: req.query.date || '1' }).select(['-__v']);
     res.status(200).send(courses);
 });
 

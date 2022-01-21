@@ -46,6 +46,10 @@ const Course = mongoose.model('courses', new mongoose.Schema({
     },
     isPublish: { type: Boolean, default: false },
     date: { type: String, default: Date.now },
+    tags: {
+        type: Array,
+        default: [],
+    }
 }));
 
 const schema = Joi.object({
