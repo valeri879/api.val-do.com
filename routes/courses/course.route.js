@@ -33,7 +33,6 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 
 /* edit courses */
 router.put(`/:id`, auth, isAdmin, async (req, res) => {
-    console.log(req.body);
     try {
         /* delete img from directory if it exists */
         if (fs.existsSync(req.body.oldPath)) await unlinkAsync(req.body.oldPath);
