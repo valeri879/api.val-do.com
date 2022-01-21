@@ -1,9 +1,7 @@
-const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth.middleware');
 const { Course } = require('../../models/course.model');
-const { User } = require('../../models/user.model');
 const upload = require('../../middleware/upload.middleware');
 const isAdmin = require('../../middleware/isAdmin.middlware');
 const fs = require('fs');
@@ -11,31 +9,25 @@ const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
 
 /* add courses */
-router.post(`/`, auth, async (req, res) => {
-    const token = req.header(`x-auth-token`);
-    const userId = jwt.verify(token, process.env.PRIVATE_KEY)._id;
+router.post(`/`, auth, isAdmin, async (req, res) => {
+    console.log(req.body)
     try {
-        if (user.isAdmin) {
-            let newCourse = new Course({
-                title: req.body.title,
-                descr: req.body.descr,
-                youtubeLink: req.body.youtubeLink,
-                telegramLink: req.body.telegramLink || undefined,
-                repoLink: req.body.repoLink || undefined,
-                img: req.body.img,
-                category: req.body.category,
-                iframe: req.body.iframe,
-                tags: req.body.tags
-            });
-            newCourse.save();
-            res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
-        }
-        else {
-            res.status(403).send(`ფუნქციონალზე წვდომა შეზღუდულია`);
-        }
+        let newCourse = new Course({
+            title: req.body.title,
+            descr: req.body.descr,
+            youtubeLink: req.body.youtubeLink,
+            telegramLink: req.body.telegramLink || undefined,
+            repoLink: req.body.repoLink || undefined,
+            img: req.body.img,
+            category: req.body.category,
+            iframe: req.body.iframe,
+            tags: req.body.tags
+        });
+        newCourse.save();
+        res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
     }
     catch (ex) {
-        res.status(400).send(new Error(ex));
+        res.status(400).send(ex);
     }
 });
 
