@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
     if (!validPassword) return res.status(400).send('მომხმარებელი ან პაროლი არასწორია');
     
     const token = jwt.sign({_id: user._id}, process.env.PRIVATE_KEY);
-    
     res.send({
         token,
         isVerify: user.isVerify,

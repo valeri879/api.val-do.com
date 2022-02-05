@@ -56,9 +56,13 @@ const schema = Joi.object({
     title: Joi.string().min(2).max(50).required(),
     descr: Joi.string().min(2).max(50).required(),
     youtubeLink: Joi.string().min(9).max(9).required(),
-    img: Joi.string().min(2).max(255).email().required(),
-    category: Joi.string().min(8).max(50).required(),
-    // tags: Joi.string().min(8).max(50).required(),
+    img: Joi.string().min(2).max(255).required(),
+    telegramLink: Joi.string(),
+    repoLink: Joi.string(),
+    date: Joi.string(),
+    category: Joi.string(),
+    iframe: Joi.string().optional().allow(''),
+    tags: Joi.array(),
 });
 
 module.exports.Course = Course;

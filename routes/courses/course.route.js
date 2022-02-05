@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth.middleware');
-const { Course } = require('../../models/course.model');
+const { Course, validate } = require('../../models/course.model');
 const upload = require('../../middleware/upload.middleware');
 const isAdmin = require('../../middleware/isAdmin.middlware');
 const fs = require('fs');
@@ -10,7 +10,6 @@ const unlinkAsync = promisify(fs.unlink);
 
 /* add courses */
 router.post(`/`, auth, isAdmin, async (req, res) => {
-    console.log(req.body)
     try {
         let newCourse = new Course({
             title: req.body.title,
@@ -33,6 +32,10 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 
 /* edit courses */
 router.put(`/:id`, auth, isAdmin, async (req, res) => {
+    const {error} = validate.validate(req.body);
+
+    if (error) return res.status(400).send(error.message);
+    
     try {
         /* delete img from directory if it exists */
         if (fs.existsSync(req.body.oldPath)) await unlinkAsync(req.body.oldPath);
@@ -55,7 +58,7 @@ router.put(`/:id`, auth, isAdmin, async (req, res) => {
 });
 
 /* image upload */
-router.post(`/upload`, auth, upload.single('img'), async (req, res) => {
+router.post(`/upload`, auth, isAdmin, upload.single('img'), async (req, res) => {
     res.status(200).send({ path: req.file.path });
 });
 

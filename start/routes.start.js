@@ -6,7 +6,7 @@ const me = require('../routes/user/me.route');
 const courses = require('../routes/courses/course.route');
 const users = require('../routes/user/users.route');
 const tags = require('../routes/tags/tags.route');
-
+const categories = require('../routes/categories/categories.route');
 module.exports = function(app) {
     app.use(express.json());
     app.use(`/uploads`, express.static('uploads'));
@@ -25,4 +25,6 @@ module.exports = function(app) {
     app.use('/api/users', users);
     app.use('/api/courses', courses);
     app.use('/api/tags', tags);
+    app.use('/api/categories', categories);
+
 }
