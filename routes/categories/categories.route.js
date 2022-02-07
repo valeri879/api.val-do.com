@@ -9,10 +9,20 @@ const { promisify } = require('util');
 const unlinkAsync = promisify(fs.unlink);
 
 /* get categories */
-router.get(`/`, auth, isAdmin, async (req, res) => {
+router.get(`/`, async (req, res) => {
     try {
         const categories = await Categories.find().select(`-__v`);
         res.status(200).send(categories);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+/* get one category */
+router.get(`/:id`, auth, isAdmin, async (req, res) => {
+    try {
+        const category = await Categories.findById(req.params['id']).select(`-__v`);
+        res.status(200).send(category);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -28,6 +38,10 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
             new Categories({
                 title: req.body.title,
                 img: req.body.img,
+                descr: req.body.descr,
+                metaAuthor: req.body.metaAuthor,
+                metaDescr: req.body.metaDescr,
+                metaKeyword: req.body.metaKeyword,
             }).save();
             res.status(200).send({ message: `კატეგორია წარმატებით დაემატა 🎉` })
             return;
@@ -62,7 +76,12 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
 router.put(`/`, auth, isAdmin, async (req, res) => {
     try {
         await Categories.findByIdAndUpdate(req.body.id, {
-            title: req.body.title
+            title: req.body.title,
+            img: req.body.img,
+            descr: req.body.descr,
+            metaAuthor: req.body.metaAuthor,
+            metaDescr: req.body.metaDescr,
+            metaKeyword: req.body.metaKeyword,
         });
         res.status(200).send({message: `კატეგორია წარმატებით განახლდა 🎉`});
     } catch (error) {

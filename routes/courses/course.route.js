@@ -10,6 +10,10 @@ const unlinkAsync = promisify(fs.unlink);
 
 /* add courses */
 router.post(`/`, auth, isAdmin, async (req, res) => {
+    const { error } = validate.validate(req.body);
+
+    if (error) return res.status(400).send(error.message);
+    
     try {
         let newCourse = new Course({
             title: req.body.title,
@@ -22,8 +26,14 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
             iframe: req.body.iframe,
             tags: req.body.tags
         });
-        newCourse.save();
-        res.status(200).send({ message: `კურსი წარმატებით დაემატა` });
+        newCourse.save(() => {
+            res.status(200).send(
+                {
+                    id: newCourse._id,
+                    message: `კურსი წარმატებით დაემატა`,
+                }
+            );
+        });
     }
     catch (ex) {
         res.status(400).send(ex);
@@ -32,7 +42,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 
 /* edit courses */
 router.put(`/:id`, auth, isAdmin, async (req, res) => {
-    const {error} = validate.validate(req.body);
+    const { error } = validate.validate(req.body);
 
     if (error) return res.status(400).send(error.message);
     
@@ -63,7 +73,7 @@ router.post(`/upload`, auth, isAdmin, upload.single('img'), async (req, res) => 
 });
 
 /* get courses */
-router.get(`/`, async (req, res) => {
+router.get(`/:id`, async (req, res) => {
     let courses;
     /* sort by tags */
     if (req.query.tag) {
@@ -71,7 +81,7 @@ router.get(`/`, async (req, res) => {
         res.status(200).send(courses);
         return;
     }
-    courses = await Course.find().sort({ date: req.query.date || '1' }).select(['-__v']);
+    courses = await Course.find({ category: req.params['id'] }).sort({ date: req.query.date || '1' }).select(['-__v']);
     res.status(200).send(courses);
 });
 
@@ -89,9 +99,13 @@ router.post(`/get-favorites`, auth, async (req, res) => {
 });
 
 /* get specific course */
-router.get(`/:id`, async (req, res) => {
-    const course = await Course.findById(req.params.id).select('-__v');
-    course ? res.status(200).send({ data: course }) : res.status(400).send({ data: 'კურსი ვერ მოიძებნა' });
+router.get(`/detail/:id`, async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id).select('-__v');
+        course ? res.status(200).send({ data: course }) : res.status(400).send({ data: 'კურსი ვერ მოიძებნა' });
+    } catch (error) {
+        res.status(400).send(new Error(error));
+    }
 });
 
 /* delete course */
