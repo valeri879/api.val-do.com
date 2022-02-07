@@ -13,7 +13,6 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
     const { error } = validate.validate(req.body);
 
     if (error) return res.status(400).send(error.message);
-    
     try {
         let newCourse = new Course({
             title: req.body.title,
@@ -26,13 +25,10 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
             iframe: req.body.iframe,
             tags: req.body.tags
         });
-        newCourse.save(() => {
-            res.status(200).send(
-                {
-                    id: newCourse._id,
-                    message: `კურსი წარმატებით დაემატა`,
-                }
-            );
+        const data = await newCourse.save();
+        res.status(200).send({
+            id: data._id,
+            message: `კურსი წარმატებით დამატა`
         });
     }
     catch (ex) {

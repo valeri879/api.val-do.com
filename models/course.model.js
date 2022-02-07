@@ -16,8 +16,7 @@ const Course = mongoose.model('courses', new mongoose.Schema({
     },
     youtubeLink: {
         type: String,
-        required: true,
-        minlength: 2,
+        default: '',
         maxlength: 1024,
     },
     iframe: {
@@ -55,7 +54,7 @@ const Course = mongoose.model('courses', new mongoose.Schema({
 const schema = Joi.object({
     title: Joi.string().min(2).max(100).required(),
     descr: Joi.string().min(2).max(10000).required(),
-    youtubeLink: Joi.string().min(9).max(255).required(),
+    youtubeLink: Joi.string().min(9).max(1024).optional().allow(''),
     img: Joi.string().min(2).max(255).required(),
     oldPath: Joi.optional().allow(''),
     telegramLink: Joi.optional().allow(null),
