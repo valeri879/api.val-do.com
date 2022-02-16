@@ -36,7 +36,11 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
     }
 });
 
-/* edit courses */
+/**
+ * edit course
+ * * კურსის რედაქტირებისთვის საჭიროა კონკრეტული კურსის პარამეტრი, რომლის რედაქტირებაც გვსურს
+ * @param id დასრედაქტირებელი კურსის ID
+*/
 router.put(`/:id`, auth, isAdmin, async (req, res) => {
     const { error } = validate.validate(req.body);
 
