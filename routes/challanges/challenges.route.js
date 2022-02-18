@@ -1,10 +1,10 @@
 const express = require('express');
 const auth = require('../../middleware/auth.middleware');
 const isAdmin = require('../../middleware/isAdmin.middlware');
-const { Challange, ChallangeValidation } = require('../../models/challanges.model');
+const { Challange, ChallengeValidation } = require('../../models/challenges.model');
 const router = express.Router();
 
-/* get challanges */
+/* get challenges */
 router.get('', async (req, res) => {
     try {
         res.status(200).send(await Challange.find().select('-__v'));
@@ -13,9 +13,18 @@ router.get('', async (req, res) => {
     }
 });
 
+/* get current challenge */
+router.get('/:id', async (req, res) => {
+    try {
+        res.status(200).send(await Challange.findById(req.params['id']).select('-__v'));
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+
 /* add challange */
 router.post('', auth, isAdmin, async (req, res) => {
-    const { error } = ChallangeValidation.validate(req.body);
+    const { error } = ChallengeValidation.validate(req.body);
     if (error) return res.status(400).send(error.message);
 
     try {
@@ -37,11 +46,12 @@ router.post('', auth, isAdmin, async (req, res) => {
 
 /* update challange */
 router.put('', auth, isAdmin, async (req, res) => {
-    const { error } = ChallangeValidation.validate(req.body);
+    console.log(req.body);
+    const { error } = ChallengeValidation.validate(req.body);
     if (error) return res.status(400).send(error.message);
 
     try {
-        let challange = await Challange.findByIdAndUpdate(req.body.id, {
+        let challange = await Challange.findByIdAndUpdate(req.body._id, {
             title: req.body.title,
             smallDescr: req.body.smallDescr,
             descr: req.body.descr,
@@ -59,7 +69,7 @@ router.put('', auth, isAdmin, async (req, res) => {
 router.delete('/:id', auth, isAdmin, async (req, res) => {
     try {
         await Challange.findByIdAndDelete(req.params['id']);
-        res.status(200).send(`გამოწვევა წარმატებით წაიშალა`);
+        res.status(200).send({ message: `გამოწვევა წარმატებით წაიშალა` });
     } catch (error) {
         res.status(400).send(error.message);
     }
