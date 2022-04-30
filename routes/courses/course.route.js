@@ -77,12 +77,36 @@ router.get(`/:id`, async (req, res) => {
     let courses;
     /* sort by tags */
     if (req.query.tag) {
-        courses = await Course.find({ tags: { $elemMatch: { _id: req.query.tag } } }).sort({ date: req.query.date || '1' });
+        courses = await Course.find(
+            {
+                tags: 
+                { $elemMatch: 
+                    { _id: req.query.tag 
+                    } 
+                } 
+            }
+        ).sort({ date: req.query.date || '1' });
         res.status(200).send(courses);
         return;
     }
     courses = await Course.find({ category: req.params['id'] }).sort({ date: req.query.date || '1' }).select(['-__v']);
     res.status(200).send(courses);
+});
+
+/* get courses by tags */
+router.get(`/tag/:id`, async (req, res) => {
+    try {
+        let courses = await Course.find({
+            tags: {
+                $elemMatch: {
+                    _id: req.params.id
+                }
+            }
+        }).select(['-__v']);
+        res.send(courses).status(200);
+    } catch (error) {
+        res.send(error).status(400);
+    }
 });
 
 /* get favorites */
