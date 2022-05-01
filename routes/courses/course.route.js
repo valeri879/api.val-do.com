@@ -149,4 +149,9 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
     }
 });
 
+/* course comment */
+router.put(`/comment/:id`, auth, async(req, res) => {
+
+});
+
 module.exports = router;

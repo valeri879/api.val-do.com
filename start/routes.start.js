@@ -4,6 +4,7 @@ const login = require('../routes/auth/login.route');
 const reset = require('../routes/auth/reset.route');
 const me = require('../routes/user/me.route');
 const courses = require('../routes/courses/course.route');
+const comment = require('../routes/comment/comment.route');
 const users = require('../routes/user/users.route');
 const tags = require('../routes/tags/tags.route');
 const categories = require('../routes/categories/categories.route');
@@ -25,6 +26,7 @@ module.exports = function(app) {
     app.use('/api/user', me);
     app.use('/api/users', users);
     app.use('/api/courses', courses);
+    app.use('/api/comment', comment);
     app.use('/api/tags', tags);
     app.use('/api/categories', categories);
     app.use('/api/challenges', challanges);

@@ -8,7 +8,7 @@ router.get(`/`, auth, async (req, res) => {
     const token = req.header(`x-auth-token`);
     const userId = jwt.verify(token, process.env.PRIVATE_KEY)._id;
     try {
-        const userData = await User.findOne({ _id: userId }).select(['-password', '-_id', '-__v', '-verificationCode']);
+        const userData = await User.findOne({ _id: userId }).select(['-password', '-__v', '-verificationCode']);
         res.status(200).send(userData);
     }
     catch (ex) {

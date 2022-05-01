@@ -16,9 +16,9 @@ module.exports = async function sendMail(data) {
     // send mail with defined transport object
     await transporter.sendMail({
         from: '"😎 val-do.com" <valeri.kharitonashvili@live.com>', // sender address
-        to: `${data['email']}`, // list of receivers
-        subject: "✅ ელფოსტის ვერიფიკაცია val-do.com", // Subject line
-        text: `✅ თქვენი ვერიფიკაციის კოდია ${data['verificationCode']}`, // plain text body
-        html: `<b>✅ თქვენი ვერიფიკაციის კოდია ${data['verificationCode']}</b>`, // html body
+        to: `valeri.kharitonashvili1@gmail.com`, // list of receivers
+        subject: "📥 ახალი კომენტარი", // Subject line
+        text: `მომხმარებელმა დაწერა ახალი კომენტარი`, // plain text body
+        html: `<a href="https://val-do.com/lessons/${data['courseId']}">კომენტარის ბმული</a> <br/> ${data['comment']}`, // html body
     });
 }
