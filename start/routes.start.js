@@ -9,6 +9,8 @@ const users = require('../routes/user/users.route');
 const tags = require('../routes/tags/tags.route');
 const categories = require('../routes/categories/categories.route');
 const challanges = require('../routes/challanges/challenges.route');
+const quiz = require('../routes/quiz/quiz.route');
+
 module.exports = function(app) {
     app.use(express.json());
     app.use(`/uploads`, express.static('uploads'));
@@ -30,4 +32,5 @@ module.exports = function(app) {
     app.use('/api/tags', tags);
     app.use('/api/categories', categories);
     app.use('/api/challenges', challanges);
+    app.use('/api/quiz', quiz);
 }

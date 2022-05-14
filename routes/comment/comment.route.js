@@ -13,7 +13,6 @@ router.post('/:courseId', auth, async (req, res) => {
         fetch(captcha_url, { method: 'post' })
             .then(resposne => resposne.json())
             .then(async response => {
-                console.log(response);
                 if (response.success) {
                     let comment = new Comment({
                         userId: req.body.userId,
