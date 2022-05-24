@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     const token = jwt.sign({ _id: user._id }, process.env.PRIVATE_KEY);
 
     await reset({
-        email: 'valeri.kharitonashvili1@gmail.com',
+        email: req.body.email,
         token,
     });
 
