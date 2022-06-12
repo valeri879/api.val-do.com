@@ -45,7 +45,7 @@ router.put(`/:id`, auth, isAdmin, async (req, res) => {
     const { error } = validate.validate(req.body);
 
     if (error) return res.status(400).send(error.message);
-    
+
     try {
         /* delete img from directory if it exists */
         if (fs.existsSync(req.body.oldPath)) await unlinkAsync(req.body.oldPath);
@@ -79,11 +79,13 @@ router.get(`/:id`, async (req, res) => {
     if (req.query.tag) {
         courses = await Course.find(
             {
-                tags: 
-                { $elemMatch: 
-                    { _id: req.query.tag 
-                    } 
-                } 
+                tags:
+                {
+                    $elemMatch:
+                    {
+                        _id: req.query.tag
+                    }
+                }
             }
         ).sort({ date: req.query.date || '1' });
         res.status(200).send(courses);
@@ -91,6 +93,23 @@ router.get(`/:id`, async (req, res) => {
     }
     courses = await Course.find({ category: req.params['id'] }).sort({ date: req.query.date || '1' }).select(['-__v']);
     res.status(200).send(courses);
+});
+
+/* course search */
+router.get(`/search/filter`, async (req, res) => {
+    try {
+        console.log(req.query.keyword)
+        let courses = await Course.find({
+            $text: {
+                $search: req.query.keyword
+            }
+        }).select(
+            ['title']
+        );
+        res.send(courses);
+    } catch (error) {
+        res.status(404).send(error)
+    }
 });
 
 /* get courses by tags */
@@ -150,7 +169,7 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
 });
 
 /* course comment */
-router.put(`/comment/:id`, auth, async(req, res) => {
+router.put(`/comment/:id`, auth, async (req, res) => {
 
 });
 
