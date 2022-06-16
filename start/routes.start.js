@@ -10,8 +10,9 @@ const tags = require('../routes/tags/tags.route');
 const categories = require('../routes/categories/categories.route');
 const challanges = require('../routes/challanges/challenges.route');
 const quiz = require('../routes/quiz/quiz.route');
+const blog = require('../routes/blog/blog.route');
 
-module.exports = function(app) {
+module.exports = function (app) {
     app.use(express.json());
     app.use(`/uploads`, express.static('uploads'));
     app.use((res, req, next) => {
@@ -27,6 +28,7 @@ module.exports = function(app) {
     app.use('/api/reset', reset);
     app.use('/api/user', me);
     app.use('/api/users', users);
+    app.use('/api/blog', blog);
     app.use('/api/courses', courses);
     app.use('/api/comment', comment);
     app.use('/api/tags', tags);
