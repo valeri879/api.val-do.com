@@ -26,7 +26,7 @@ router.put('/:id', async (req, res) => {
             description: req.body.description,
             image: req.body.image
         });
-        res.send(blog)
+        res.send(blog);
     } catch (error) {
         res.status(400).send(error);
     }
