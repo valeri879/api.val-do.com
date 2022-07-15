@@ -42,6 +42,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
                 metaAuthor: req.body.metaAuthor,
                 metaDescr: req.body.metaDescr,
                 metaKeyword: req.body.metaKeyword,
+                isFavorite: req.body.isFavorite
             }).save();
             res.status(200).send({ message: `კატეგორია წარმატებით დაემატა 🎉` })
             return;
@@ -82,6 +83,7 @@ router.put(`/`, auth, isAdmin, async (req, res) => {
             metaAuthor: req.body.metaAuthor,
             metaDescr: req.body.metaDescr,
             metaKeyword: req.body.metaKeyword,
+            isFavorite: req.body.isFavorite
         });
         res.status(200).send({message: `კატეგორია წარმატებით განახლდა 🎉`});
     } catch (error) {

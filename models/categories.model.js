@@ -25,6 +25,10 @@ const Categories = mongoose.model('categories', new mongoose.Schema({
     img: {
         type: String,
         required: true
+    },
+    isFavorite: {
+        type: Boolean,
+        default: false,
     }
 }));
 
