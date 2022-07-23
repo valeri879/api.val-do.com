@@ -79,7 +79,7 @@ router.put('/', async (req, res) => {
             description: req.body.description,
             isPublished: false,
             ...req.body.user,
-            date: Date.now()
+            date: Date.now
         }, { new: true });
         res.send(review);
         sendNotification(review.user, req, true);

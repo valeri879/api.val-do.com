@@ -30,7 +30,7 @@ const Reviews = new mongoose.model('reviews', new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 }));
 
