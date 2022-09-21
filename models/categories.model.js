@@ -36,7 +36,7 @@ const schema = Joi.object({
     title: Joi.string().min(2).max(255).required(),
     descr: Joi.string().min(15).max(255).required(),
     metaDescr: Joi.string().optional().allow(''),
-    isFavorite: Joi.string().optional().allow(''),
+    isFavorite: Joi.boolean().optional().allow(''),
     metaKeyword: Joi.string().optional().allow(''),
     metaAuthor: Joi.string().optional().allow(''),
     img: Joi.string().required(),
