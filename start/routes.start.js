@@ -12,6 +12,7 @@ const challanges = require('../routes/challanges/challenges.route');
 const quiz = require('../routes/quiz/quiz.route');
 const blog = require('../routes/blog/blog.route');
 const reviews = require('../routes/reviews/reviews.route');
+const profile = require('../routes/user/profile.route');
 
 module.exports = function (app) {
     app.use(express.json());
@@ -37,4 +38,5 @@ module.exports = function (app) {
     app.use('/api/categories', categories);
     app.use('/api/challenges', challanges);
     app.use('/api/quiz', quiz);
+    app.use('/api/profile', profile);
 }

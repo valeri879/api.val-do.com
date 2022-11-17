@@ -64,10 +64,9 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
     const course = await Categories.findById(req.params['id']);
     /* delete img from directory if it exists */
     if (fs.existsSync(course.img)) await unlinkAsync(course.img);
-
     try {
-        course.remove();
-        res.send(`კატეგორია წარმატებით წაიშალა 🎉`);
+        await course.remove();
+        res.status(200).send({ message: `კატეგორია წარმატებით წაიშალა 🎉` });
     } catch (ex) {
         res.status(400).send(new Error(ex));
     }

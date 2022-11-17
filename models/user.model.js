@@ -36,6 +36,7 @@ const User = mongoose.model('users', new mongoose.Schema({
     favorites: {
         type: []
     },
+    profileImage: { type: String },
     isAdmin: { type: Boolean, default: false },
     isVerify: { type: Boolean, default: false },
     registrationDate: { type: String, default: Date.now },
@@ -43,6 +44,7 @@ const User = mongoose.model('users', new mongoose.Schema({
 }));
 
 const schema = Joi.object({
+    profileImage: Joi.string(),
     firstName: Joi.string().min(2).max(50).required(),
     lastName: Joi.string().min(2).max(50).required(),
     phone: Joi.string().min(9).max(9).required(),
