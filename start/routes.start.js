@@ -13,9 +13,10 @@ const quiz = require('../routes/quiz/quiz.route');
 const blog = require('../routes/blog/blog.route');
 const reviews = require('../routes/reviews/reviews.route');
 const profile = require('../routes/user/profile.route');
+const cv = require('../routes/cv/cv.route');
 
 module.exports = function (app) {
-    app.use(express.json());
+app.use(express.json());
     app.use(`/uploads`, express.static('uploads'));
     app.use((res, req, next) => {
         req.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,4 +40,5 @@ module.exports = function (app) {
     app.use('/api/challenges', challanges);
     app.use('/api/quiz', quiz);
     app.use('/api/profile', profile);
+    app.use('/api/cv', cv);
 }
