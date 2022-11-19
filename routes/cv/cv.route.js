@@ -2,12 +2,23 @@ const express = require('express');
 const router = express.Router();
 
 const { Cv } = require('../../models/cv.model');
+const { Tags } = require('../../models/tags.model');
 const auth = require('../../middleware/auth.middleware');
 
 router.get('/', async (req, res) => {
     res.send(await Cv.find());
 });
 
+// უნარების წამოღება
+router.get('/skills', auth, async (req, res) => {
+    try {
+        res.send(await Tags.find().select(['-__v', '-_id']));
+    } catch (error) {
+        res.status(400).send(new Error(error));
+    }
+});
+
+// კონკრეტული Cv-ის წამოღება
 router.get('/:id', async (req, res) => {
     try {
         const cv = await Cv.findById(req.params.id);
@@ -17,6 +28,8 @@ router.get('/:id', async (req, res) => {
         res.status(400).send(new Error(error));
     }
 });
+
+
 
 // ახალი სვ-ის დამატება
 router.post('/', auth, async (req, res) => {
