@@ -14,6 +14,7 @@ const blog = require('../routes/blog/blog.route');
 const reviews = require('../routes/reviews/reviews.route');
 const profile = require('../routes/user/profile.route');
 const cv = require('../routes/cv/cv.route');
+const main = require('../routes/main/main.route');
 
 module.exports = function (app) {
 app.use(express.json());
@@ -41,4 +42,5 @@ app.use(express.json());
     app.use('/api/quiz', quiz);
     app.use('/api/profile', profile);
     app.use('/api/cv', cv);
+    app.use('/api/', main);
 }
