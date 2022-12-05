@@ -89,7 +89,7 @@ router.get(`/:id`, async (req, res) => {
 		courses = await Course.find({ category: req.params["id"] })
 			.sort({ date: req.query.date || "1" })
 			.select(["-__v"]);
-		courses.length ? res.status(200).send(courses) : res.status(301).send(new Error());
+		courses.length ? res.status(200).send(courses) : res.status(400).send(new Error());
 	} catch (error) {
 		res.status(400).send(error);
 	}
