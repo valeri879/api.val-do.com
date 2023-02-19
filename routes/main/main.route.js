@@ -7,12 +7,14 @@ const { Blog } = require("../../models/blog.model");
 
 router.get("", async (req, res) => {
 	const blogs = await Blog.find().limit(3);
+	const lastBlogs = await Blog.find().limit(3).sort({$natural: -1});
 	const topCategories = await Categories.find({ isFavorite: true }).limit(3);
 	const reviews = await Reviews.find({ isFavorite: true }).limit(4).sort({ date: -1 });
 	res.send({
 		categories: topCategories,
 		reviews: reviews,
 		blogs: blogs,
+    lastBlogs: lastBlogs
 	});
 });
 
