@@ -4,11 +4,44 @@ const auth = require("../../middleware/auth.middleware");
 const isAdmin = require("../../middleware/isAdmin.middlware");
 const { Tags } = require("../../models/tags.model");
 
+const pagination = (page, limit, totalDocuments) => {
+	limit = parseInt(limit) || 1;
+	page = parseInt(page) || 0;
+
+	const totalPages = Math.ceil(totalDocuments / limit);
+	const currentPage = page + 1;
+
+	let pagesArray = [];
+	let pageNumbers = currentPage + 3 < totalPages ? currentPage + 3 : totalPages - currentPage;
+
+	if (currentPage < pageNumbers) {
+		for (let i = currentPage; i <= pageNumbers; i++)
+			pagesArray.push(i)
+	} else {
+		for (let i = currentPage; i <= totalDocuments - 1; i++)
+			pagesArray.push(i)
+	}
+	return {
+		totalDocuments,
+		totalPages,
+		currentPage,
+		next: currentPage < totalPages,
+		prev: page > 0,
+		limit,
+		skip: limit * page,
+		pagesArray
+	}
+}
+
 /* get all tags */
 router.get(`/`, auth, isAdmin, async (req, res) => {
-	const tags = await Tags.find().select("-__v");
+	const paginationData = pagination(req.query.page, req.query.limit, await Tags.countDocuments());
+	const tags = await Tags.find().select("-__v").skip(paginationData.skip).limit(paginationData.limit);
 	try {
-		res.status(200).send(tags);
+		res.status(200).send({
+			data: tags,
+			...paginationData
+		});
 	} catch (ex) {
 		res.status(400).send(new Error(ex));
 	}
