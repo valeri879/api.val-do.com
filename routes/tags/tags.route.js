@@ -5,30 +5,28 @@ const isAdmin = require("../../middleware/isAdmin.middlware");
 const { Tags } = require("../../models/tags.model");
 
 const pagination = (page, limit, totalDocuments) => {
-	limit = parseInt(limit) || 1;
+	limit = parseInt(limit) || 12;
 	page = parseInt(page) || 0;
 
 	const totalPages = Math.ceil(totalDocuments / limit);
-	const currentPage = page + 1;
-
 	let pagesArray = [];
-	let pageNumbers = currentPage + 3 < totalPages ? currentPage + 3 : totalPages - currentPage;
+	let gap = 3;
 
-	if (currentPage < pageNumbers) {
-		for (let i = currentPage; i <= pageNumbers; i++)
-			pagesArray.push(i)
-	} else {
-		for (let i = currentPage; i <= totalDocuments - 1; i++)
-			pagesArray.push(i)
+	if (totalPages - page < 3) {
+		gap = totalPages - page;
+		console.log(totalPages, page)
 	}
+	for (let i = page; i <= (page + gap); i++)
+		pagesArray.push(i)
+
 	return {
 		totalDocuments,
 		totalPages,
-		currentPage,
-		next: currentPage < totalPages,
-		prev: page > 0,
+		currentPage: page,
+		next: page < totalPages,
+		prev: page > 1,
 		limit,
-		skip: limit * page,
+		skip: (limit * page) - 1,
 		pagesArray
 	}
 }
