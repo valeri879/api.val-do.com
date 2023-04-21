@@ -3,33 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth.middleware");
 const isAdmin = require("../../middleware/isAdmin.middlware");
 const { Tags } = require("../../models/tags.model");
-
-const pagination = (page, limit, totalDocuments) => {
-	limit = parseInt(limit) || 12;
-	page = parseInt(page) || 0;
-
-	const totalPages = Math.ceil(totalDocuments / limit);
-	let pagesArray = [];
-	let gap = 3;
-
-	if (totalPages - page < 3) {
-		gap = totalPages - page;
-		console.log(totalPages, page)
-	}
-	for (let i = page; i <= (page + gap); i++)
-		pagesArray.push(i)
-
-	return {
-		totalDocuments,
-		totalPages,
-		currentPage: page,
-		next: page < totalPages,
-		prev: page > 1,
-		limit,
-		skip: (limit * page) - 1,
-		pagesArray
-	}
-}
+const { pagination } = require("../../helpers/pagination");
 
 /* get all tags */
 router.get(`/`, auth, isAdmin, async (req, res) => {

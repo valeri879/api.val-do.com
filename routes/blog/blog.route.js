@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const isAdmin = require("../../middleware/isAdmin.middlware");
 const { Blog } = require("../../models/blog.model");
+const { pagination } = require("../../helpers/pagination");
 
 /* add */
 router.post("/", isAdmin, async (req, res) => {
@@ -43,7 +44,12 @@ router.get("/:id", async (req, res) => {
 /* get all blogs */
 router.get("/", async (req, res) => {
 	try {
-		res.send(await Blog.find());
+		const paginationData = pagination(req.query.page, req.query.limit, await Blog.countDocuments());
+		// res.send(await Blog.find());
+		res.send({
+			data: await Blog.find().sort({$natural: -1}).skip(paginationData.skip).limit(paginationData.limit),
+			...paginationData
+		});
 	} catch (error) {
 		res.send(error);
 	}
