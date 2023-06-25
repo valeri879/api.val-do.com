@@ -10,11 +10,19 @@ const router = express.Router();
 const fs = require('fs');
 const {promisify} = require('util');
 const unlinkAsync = promisify(fs.unlink);
+const { Course } = require('../../models/course.model');
 
 /* get categories */
 router.get(`/`, async (req, res) => {
   try {
-    const categories = await Categories.find().select(`-__v`);
+    const categories = await Categories.find().select(`-__v`).lean();
+    
+    /* კატეგორიაში შემავალი კურსების რაოდენობის გამოთვლა */
+    for (let i = 0; i < categories.length; i++) {
+      const count = await Course.find({ category: categories[i]._id }).count();
+      categories[i].coursesCount = count;
+    }
+
     res.status(200).send(categories);
   } catch (error) {
     res.status(400).send(error);
