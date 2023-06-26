@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth.middleware");
 const { Course, validate } = require("../../models/course.model");
+const { Categories } = require("../../models/categories.model");
 const upload = require("../../middleware/upload.middleware");
 const isAdmin = require("../../middleware/isAdmin.middlware");
 const fs = require("fs");
@@ -88,10 +89,16 @@ router.get(`/:id`, async (req, res) => {
 		}
 		courses = await Course.find({ category: req.params["id"] })
 			.sort({ date: req.query.date || "1" })
-			.select(["-__v"]);
+			.select(["-__v"]).lean();
+		
 
 		if (courses.length) {
-			res.status(200).send(courses);
+			const categoryData = await Categories.findById(courses[0].category).lean();
+			res.status(200).send(
+				{
+					...categoryData,
+					data: courses
+				});
 			return;
 		}
 		res.status(404).send();
