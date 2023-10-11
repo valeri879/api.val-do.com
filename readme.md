@@ -1,6 +1,6 @@
 ## პროექტის აღწერა
 
-მოცემული backend პროექტი მოიცავს სრულფასოვანი ვებ-გვერდის API-ს, რომელშიც შესულია შემდეგი გვერდები
+მოცემული **backend** პროექტი მოიცავს სრულფასოვანი ვებ-გვერდის API-ს, რომელშიც შესულია შემდეგი გვერდები
 
 ## გარე გვერდები
 
@@ -21,6 +21,8 @@
 *   პაროლის აღდგენის გვერდი
 
 ## ადმინისტრატორის გვერდები
+ქვემოთ მოცემულია სამართავი პანელის გვერდები, რომლის დახმარებითაც შეგვიძლია განვახორციელოთ **CRUD** ოპერაციები, არსებულ ფუქციონალზე წვდომა შესაძლებელია იმ შემთხვევაში,
+თუ `header`-ებში გამოვატანთ `x-auth-token`-ს, ასევე აუცილებელია მომხმარებელი იყოს **ადმინისტრატორის** უფლებებით
 
 *   პროფილის გვერდი
     *   ფოტოს ატვირთვა
@@ -60,7 +62,9 @@
 *   [git bash](https://git-scm.com/) (Windows-ის შემთხვევაში) ხოლო Mac-ზე ან Linux-ზე აუცილებელია git-ის ინსტალაცია
 *   [nodejs](https://nodejs.org/en)
 *   [npm](https://www.npmjs.com/)
-*   [mongodb](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/)
+*   [mongodb for Windows](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/)
+*   [mongodb for Linux](https://www.mongodb.com/docs/manual/administration/install-on-linux/)
+*   [mongodb for Mac OS](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/)
 *   [mongodb compass](https://www.mongodb.com/products/tools/compass)
 *   [nodemon](https://www.npmjs.com/package/nodemon)
 *   [postman](https://www.postman.com/)
