@@ -36,6 +36,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 	}
 });
 
+
 /**
  * edit course
  * * კურსის რედაქტირებისთვის საჭიროა კონკრეტული კურსის პარამეტრი, რომლის რედაქტირებაც გვსურს
@@ -88,7 +89,7 @@ router.get(`/:id`, async (req, res) => {
 			return;
 		}
 		courses = await Course.find({ category: req.params["id"] })
-			.sort({ date: req.query.date || "1" })
+			.sort({ index: -1 })
 			.select(["-__v"]).lean();
 		
 
@@ -179,4 +180,39 @@ router.delete(`/:id`, auth, isAdmin, async (req, res) => {
 /* course comment */
 router.put(`/comment/:id`, auth, async (req, res) => {});
 
+router.post(`/sorting`, auth, isAdmin, async (req, res) => {
+	try {
+		console.log(req.body)
+
+		let courses = await Course.find({ category: req.body.categoryId });
+
+		const previousCourse = courses[req.body.previousIndex];
+		const currentCourse = courses[req.body.currentIndex];
+
+		await Course.findOneAndUpdate(
+			{ '_id': previousCourse._id },
+			{
+				$set: {
+					index: currentCourse.index
+				}
+			}
+		);
+
+		await Course.findOneAndUpdate(
+			{ '_id': currentCourse._id },
+			{
+				$set: {
+					index: previousCourse.index
+				}
+			}
+		);
+
+		// courses = await Course().find().sort({ index: -1 });
+		res.status(200).send(
+			await Course.find().sort({ index: -1 })
+		);
+	} catch (error) {
+		res.status(400).send({err: error.message})
+	}
+})
 module.exports = router;

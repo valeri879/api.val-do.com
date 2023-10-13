@@ -51,6 +51,10 @@ const Course = mongoose.model(
 			type: Array,
 			default: [],
 		},
+		index: {
+			type: Number,
+			required: true
+		},
 	})
 );
 
