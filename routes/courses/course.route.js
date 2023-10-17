@@ -89,7 +89,7 @@ router.get(`/:id`, async (req, res) => {
 			return;
 		}
 		courses = await Course.find({ category: req.params["id"] })
-			.sort({ index: -1 })
+			.sort(req.query.date ? { date: req.query.date } : { index: 1 }) // ვასორტირებთ თარიღით ან ინდექსით
 			.select(["-__v"]).lean();
 		
 
