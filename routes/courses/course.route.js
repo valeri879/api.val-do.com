@@ -182,7 +182,7 @@ router.put(`/comment/:id`, auth, async (req, res) => {});
 
 router.post(`/sorting`, auth, isAdmin, async (req, res) => {
 	try {
-		let courses = await Course.find({ category: req.body.categoryId }).sort({ index: -1 });
+		let courses = await Course.find({ category: req.body.categoryId }).sort({ index: 1 });
 
 		const previousCourse = courses[req.body.previousIndex];
 		const currentCourse = courses[req.body.currentIndex];
