@@ -182,9 +182,7 @@ router.put(`/comment/:id`, auth, async (req, res) => {});
 
 router.post(`/sorting`, auth, isAdmin, async (req, res) => {
 	try {
-		console.log(req.body)
-
-		let courses = await Course.find({ category: req.body.categoryId });
+		let courses = await Course.find({ category: req.body.categoryId }).sort({ index: -1 });
 
 		const previousCourse = courses[req.body.previousIndex];
 		const currentCourse = courses[req.body.currentIndex];
@@ -209,7 +207,14 @@ router.post(`/sorting`, auth, isAdmin, async (req, res) => {
 
 		// courses = await Course().find().sort({ index: -1 });
 		res.status(200).send(
-			await Course.find().sort({ index: -1 })
+			{
+				pre: previousCourse,
+				curr: currentCourse,
+				// ts:await Course.findById(currentCourse._id),
+				// dx:await Course.find({ category: req.body.categoryId }).sort({ index: -1 })
+			}
+			
+			// 
 		);
 	} catch (error) {
 		res.status(400).send({err: error.message})
