@@ -205,13 +205,10 @@ router.post(`/sorting`, auth, isAdmin, async (req, res) => {
 			}
 		);
 
-		// courses = await Course().find().sort({ index: -1 });
 		res.status(200).send(
 			{
 				pre: previousCourse,
 				curr: currentCourse,
-				// ts:await Course.findById(currentCourse._id),
-				// dx:await Course.find({ category: req.body.categoryId }).sort({ index: -1 })
 			}
 			
 			// 
