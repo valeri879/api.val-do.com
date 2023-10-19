@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const registration = require("../routes/auth/registration.route");
 const login = require("../routes/auth/login.route");
 const reset = require("../routes/auth/reset.route");
@@ -17,7 +18,7 @@ const cv = require("../routes/cv/cv.route");
 const main = require("../routes/main/main.route");
 
 module.exports = function (app) {
-	app.use(express.json());
+	app.use(bodyParser.json({ limit: '50mb' }));
 	app.use(`/uploads`, express.static("uploads"));
 	app.use((res, req, next) => {
 		req.setHeader("Access-Control-Allow-Origin", "*");

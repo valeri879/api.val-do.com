@@ -1,6 +1,7 @@
 {
 	"dependencies": {
 		"bcrypt": "^5.0.1",
+		"body-parser": "^1.20.2",
 		"express": "^4.17.1",
 		"isomorphic-fetch": "^3.0.0",
 		"joi": "^17.5.0",

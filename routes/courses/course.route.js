@@ -15,6 +15,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 
 	if (error) return res.status(400).send(error.message);
 	try {
+		let count = await Course.find().countDocuments();
 		let newCourse = new Course({
 			title: req.body.title,
 			descr: req.body.descr,
@@ -25,6 +26,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
 			category: req.body.category,
 			iframe: req.body.iframe,
 			tags: req.body.tags,
+			index: count++
 		});
 		const data = await newCourse.save();
 		res.status(200).send({

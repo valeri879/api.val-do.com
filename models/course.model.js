@@ -14,7 +14,6 @@ const Course = mongoose.model(
 			type: String,
 			required: true,
 			minlength: 2,
-			maxlength: 5000,
 		},
 		youtubeLink: {
 			type: String,
@@ -53,14 +52,14 @@ const Course = mongoose.model(
 		},
 		index: {
 			type: Number,
-			required: true
+			required: true,
 		},
 	})
 );
 
 const schema = Joi.object({
 	title: Joi.string().min(2).max(100).required(),
-	descr: Joi.string().min(2).max(10000).required(),
+	descr: Joi.string().min(2).required(),
 	youtubeLink: Joi.string().min(9).max(1024).optional().allow(""),
 	img: Joi.string().min(2).max(255).required(),
 	oldPath: Joi.optional().allow(""),
