@@ -3,8 +3,8 @@ const express = require("express");
 const app = express();
 require("./start/routes.start")(app);
 require("./start/db.start")();
-
-const fs = require('fs');
+// file converter
+/* const fs = require('fs');
 const sharp = require('sharp');
 
 fs.readdirSync('uploads').forEach(file => {
@@ -13,7 +13,7 @@ fs.readdirSync('uploads').forEach(file => {
     if (imgRegex.test(file)) {
         sharp(`./uploads/${file}`).resize({ width: 320 }).toFile(`./uploads/small/${file}`).then(() => { });
     }
-})
+}) */
 
 
 if (!process.env.PRIVATE_KEY) {
