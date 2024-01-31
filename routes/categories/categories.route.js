@@ -1,4 +1,6 @@
 const express = require('express');
+const sharp = require('sharp');
+
 const auth = require('../../middleware/auth.middleware');
 const isAdmin = require('../../middleware/isAdmin.middlware');
 const upload = require('../../middleware/upload.middleware');
@@ -41,10 +43,10 @@ router.get(`/:id`, auth, isAdmin, async (req, res) => {
 
 /* add category */
 router.post(`/`, auth, isAdmin, async (req, res) => {
-  const {error} = CategoryValidation.validate(req.body);
+  const { error } = CategoryValidation.validate(req.body);
   if (error) return res.status(400).send(error.message);
   try {
-    const exist = await Categories.findOne({title: req.body.title});
+    const exist = await Categories.findOne({ title: req.body.title });
     if (!exist) {
       new Categories({
         title: req.body.title,
@@ -55,7 +57,7 @@ router.post(`/`, auth, isAdmin, async (req, res) => {
         metaKeyword: req.body.metaKeyword,
         isFavorite: req.body.isFavorite,
       }).save();
-      res.status(200).send({message: `კატეგორია წარმატებით დაემატა 🎉`});
+      res.status(200).send({ message: `კატეგორია წარმატებით დაემატა 🎉` });
       return;
     }
     res.status(400).send({message: `მოცემული კატეგორია უკვე არსებობს 🙁`});
@@ -71,7 +73,10 @@ router.post(
   isAdmin,
   upload.single('img'),
   async (req, res) => {
-    res.send({path: req.file.path});
+    const { file } = req;
+    // convert to small image
+    await sharp(file.path).resize({ width: 320 }).toFile(`./uploads/small/${file.filename}`);
+    res.send({ path: file.filename });
   },
 );
 
