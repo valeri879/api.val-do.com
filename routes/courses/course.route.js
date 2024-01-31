@@ -1,4 +1,5 @@
 const express = require("express");
+const sharp = require("sharp");
 const router = express.Router();
 const auth = require("../../middleware/auth.middleware");
 const { Course, validate } = require("../../models/course.model");
@@ -71,7 +72,10 @@ router.put(`/:id`, auth, isAdmin, async (req, res) => {
 
 /* image upload */
 router.post(`/upload`, auth, isAdmin, upload.single("img"), async (req, res) => {
-	res.status(200).send({ path: req.file.path });
+	const { file } = req;
+	// convert to small image
+	await sharp(file.path).resize({ width: 320 }).toFile(`./uploads/small/${file.filename}`);
+	res.status(200).send({ path: file.filename });
 });
 
 /* get courses */
